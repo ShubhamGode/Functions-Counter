@@ -1,0 +1,121 @@
+﻿@model List<FunctionCounter.Models.FunctionInfo>
+
+<div class="container">
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <script>
+                alert('@ViewBag.ErrorMessage');
+        </script>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+                alert('@TempData["ErrorMessage"]');
+        </script>
+    }
+    <h2>Web Forms Function Extractor</h2>
+
+    <form method="post" class="search-form">
+
+        <input type="text"
+               id="projectPath"
+               name="projectPath"
+               class="path-input"
+               value="@ViewBag.ProjectPath"
+               placeholder="Enter the project path" />
+
+        <select name="language" class="language-dropdown">
+
+            <option value="All" selected="@(ViewBag.Language == "All")">
+                All Languages
+            </option>
+
+            <option value="cs" selected="@(ViewBag.Language == "cs")">
+                C#
+            </option>
+
+            <option value="java" selected="@(ViewBag.Language == "java")">
+                Java
+            </option>
+
+            <option value="cpp" selected="@(ViewBag.Language == "cpp")">
+                C++
+            </option>
+
+            <option value="py" selected="@(ViewBag.Language == "py")">
+                Python
+            </option>
+
+        </select>
+        <div class="button-group">
+
+            <button type="submit"
+                    formaction="/Home/Index"
+                    onclick="return validateProjectPath();">
+                Scan
+            </button>
+
+            <button type="submit"
+                    formaction="/Home/Download"
+                    onclick="return validateProjectPath();">
+                Download TXT
+            </button>
+
+        </div>
+
+    </form>
+
+    @if (Model.Any())
+    {
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>File Name</th>
+                        <th>Language</th>
+                        <th>Function Name</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.FileName</td>
+                            <td>@item.Language</td>
+                            <td>@item.FunctionName</td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+    <script>
+
+            function validateProjectPath() {
+
+                let projectPath =
+                    document.getElementById("projectPath").value.trim();
+
+                if (projectPath === "") {
+
+                    alert("Please enter the project path.");
+
+                    return false;
+                }
+
+                return true;
+            }
+
+    </script>
+</div>
